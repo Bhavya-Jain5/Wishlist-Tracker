@@ -5,10 +5,11 @@ import RandomGiftModal from './RandomGiftModal'
 import PurchasedSection from './PurchasedSection'
 import { pickWeightedRandom } from '../utils/weightedRandom'
 
-export default function TabView({ user, data, onAddItem, onDeleteItem, onBoughtItem }) {
+export default function TabView({ user, data, onAddItem, onEditItem, onDeleteItem, onBoughtItem }) {
   const partner = user === 'bhavya' ? 'aastha' : 'bhavya'
   const [activeTab, setActiveTab] = useState(user)
   const [showAddForm, setShowAddForm] = useState(false)
+  const [editingItem, setEditingItem] = useState(null)
   const [randomGift, setRandomGift] = useState(null)
   const [showPurchased, setShowPurchased] = useState(false)
 
@@ -80,6 +81,7 @@ export default function TabView({ user, data, onAddItem, onDeleteItem, onBoughtI
               isOwn={viewingOwn}
               onDelete={onDeleteItem}
               onBought={onBoughtItem}
+              onEdit={setEditingItem}
             />
           ))
         )}
@@ -89,6 +91,14 @@ export default function TabView({ user, data, onAddItem, onDeleteItem, onBoughtI
         <AddItemForm
           onAdd={onAddItem}
           onClose={() => setShowAddForm(false)}
+        />
+      )}
+
+      {editingItem && (
+        <AddItemForm
+          editItem={editingItem}
+          onAdd={onEditItem}
+          onClose={() => setEditingItem(null)}
         />
       )}
 

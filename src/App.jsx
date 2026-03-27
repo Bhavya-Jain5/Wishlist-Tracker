@@ -55,6 +55,14 @@ export default function App() {
     await updateData(newData)
   }
 
+  async function handleEditItem(updatedItem) {
+    const newData = {
+      ...data,
+      [user]: (data[user] || []).map(i => i.id === updatedItem.id ? updatedItem : i),
+    }
+    await updateData(newData)
+  }
+
   async function handleDeleteItem(itemId) {
     const newData = {
       ...data,
@@ -124,6 +132,7 @@ export default function App() {
         user={user}
         data={data}
         onAddItem={handleAddItem}
+        onEditItem={handleEditItem}
         onDeleteItem={handleDeleteItem}
         onBoughtItem={handleBoughtItem}
       />

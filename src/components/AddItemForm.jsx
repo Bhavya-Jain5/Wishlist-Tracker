@@ -9,14 +9,16 @@ const WANT_LABELS = {
   5: { emoji: '🥵', text: 'OBSESSED' },
 }
 
-export default function AddItemForm({ onAdd, onClose }) {
-  const [link, setLink] = useState('')
-  const [name, setName] = useState('')
-  const [image, setImage] = useState('')
-  const [price, setPrice] = useState('')
-  const [wantScore, setWantScore] = useState(3)
+export default function AddItemForm({ onAdd, onClose, editItem }) {
+  const [link, setLink] = useState(editItem?.link || '')
+  const [name, setName] = useState(editItem?.name || '')
+  const [image, setImage] = useState(editItem?.image || '')
+  const [price, setPrice] = useState(editItem?.price || '')
+  const [wantScore, setWantScore] = useState(editItem?.wantScore || 3)
   const [fetching, setFetching] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+
+  const isEditing = !!editItem
 
   async function handleLinkPaste(value) {
     setLink(value)
@@ -36,13 +38,13 @@ export default function AddItemForm({ onAdd, onClose }) {
     if (!name.trim()) return
     setSubmitting(true)
     await onAdd({
-      id: crypto.randomUUID(),
+      id: editItem?.id || crypto.randomUUID(),
       name: name.trim(),
       link: link.trim() || null,
       image: image.trim() || null,
       price: price.trim() || null,
       wantScore,
-      addedAt: new Date().toISOString(),
+      addedAt: editItem?.addedAt || new Date().toISOString(),
     })
     setSubmitting(false)
     onClose()
@@ -54,7 +56,7 @@ export default function AddItemForm({ onAdd, onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal add-form" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Add to Wishlist</h2>
+          <h2>{isEditing ? 'Edit Item' : 'Add to Wishlist'}</h2>
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -111,7 +113,7 @@ export default function AddItemForm({ onAdd, onClose }) {
             </div>
           </div>
           <button type="submit" className="btn btn-primary submit-btn" disabled={!name.trim() || submitting}>
-            {submitting ? 'Adding...' : 'Add to Wishlist'}
+            {submitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Add to Wishlist'}
           </button>
         </form>
       </div>

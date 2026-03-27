@@ -1,8 +1,12 @@
 const WANT_EMOJIS = { 1: '🙂', 2: '😊', 3: '😍', 4: '🤩', 5: '🥵' }
 
-export default function WishlistItem({ item, isOwn, onDelete, onBought }) {
+export default function WishlistItem({ item, isOwn, onDelete, onBought, onEdit }) {
   function handleClick() {
-    if (item.link) window.open(item.link, '_blank', 'noopener')
+    if (isOwn) {
+      onEdit(item)
+    } else if (item.link) {
+      window.open(item.link, '_blank', 'noopener')
+    }
   }
 
   return (
