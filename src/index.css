@@ -140,16 +140,21 @@ a {
 /* === PIN Screen === */
 .pin-screen {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   min-height: 100dvh;
   padding: 24px;
+  padding-top: 30vh;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
 }
 
 .pin-content {
   text-align: center;
   width: 100%;
   max-width: 360px;
+  position: relative;
 }
 
 .pin-icon {
@@ -211,6 +216,10 @@ a {
 
 .pin-hidden-input {
   position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 1px;
   opacity: 0;
   pointer-events: none;
 }
